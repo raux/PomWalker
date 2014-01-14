@@ -1,0 +1,6 @@
+index:false
+indexfile:scan.txt
+repo:C:\\\\Users\\Raula\\Documents\\maven
+outFile:outDep.csv
+art:hamcrest-core
+ver:1.1
