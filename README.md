@@ -28,19 +28,17 @@ Files
 ------------------
 
 Class MainWalker - Used as the main file with configurations.
- 
-# scanlog - file used to store the file paths of each POM file
-# repo - path of where the Maven repository resides
-# outF = variable that stores the outputfile name.. (outputPOM.csv)
+ -scanlog : file used to store the file paths of each POM file
+ -repo : path of where the Maven repository resides
+ -outF : variable that stores the outputfile name.. (outputPOM.csv)
 
 Class FileScan - Used for scanning files
 
 Class PomParser - used for parsing the POM files. 
 
-##method printManagedModel - used to parse and extract dependencies of superPOM files
+--method printManagedModel - used to parse and extract dependencies of superPOM files
 (those with managed dependencies)
-
-##method printDep used to parse and extract dependencies of normal dependencies.
+--method printDep used to parse and extract dependencies of normal dependencies.
 
 
 
