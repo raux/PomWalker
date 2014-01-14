@@ -19,17 +19,20 @@ Dependencies
 This parser uses the following artifacts. At this stage I have manually configured them in the
 build file but plan to move to make dynamic.
 
-apache-commons-net.jar
-plexus-utils-3.0.15.jar
-utils4j-0.7.0.jar
-maven-model-3.1.1.jar
+1. apache-commons-net.jar
+2. plexus-utils-3.0.15.jar
+3. utils4j-0.7.0.jar
+4. maven-model-3.1.1.jar
 
 Files
 ------------------
 
 Class MainWalker - Used as the main file with configurations.
+
  -scanlog : file used to store the file paths of each POM file
+ 
  -repo : path of where the Maven repository resides
+ 
  -outF : variable that stores the outputfile name.. (outputPOM.csv)
 
 Class FileScan - Used for scanning files
@@ -38,6 +41,7 @@ Class PomParser - used for parsing the POM files.
 
 --method printManagedModel - used to parse and extract dependencies of superPOM files
 (those with managed dependencies)
+
 --method printDep used to parse and extract dependencies of normal dependencies.
 
 
