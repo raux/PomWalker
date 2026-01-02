@@ -1,0 +1,29 @@
+{
+  "name": "js-parser",
+  "version": "1.0.0",
+  "description": "JavaScript/npm package parser for analyzing package.json and lock files",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test tests/*.test.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "package.json",
+    "parser",
+    "npm",
+    "dependencies",
+    "lock-file"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/semver": "^7.7.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "semver": "^7.5.4"
+  }
+}
