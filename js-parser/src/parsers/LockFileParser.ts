@@ -134,7 +134,18 @@ export class LockFileParser {
     if ('type' in lockFile && lockFile.type === 'yarn') {
       // Process yarn lock
       for (const [key, entry] of Object.entries(lockFile.entries)) {
-        const packageName = key.substring(0, key.indexOf('@', 1));
+        // Handle scoped packages (e.g., '@babel/core@^7.0.0')
+        let packageName: string;
+        if (key.startsWith('@')) {
+          // Scoped package: find the second '@'
+          const secondAtIndex = key.indexOf('@', 1);
+          packageName = secondAtIndex > 0 ? key.substring(0, secondAtIndex) : key;
+        } else {
+          // Regular package
+          const atIndex = key.indexOf('@');
+          packageName = atIndex > 0 ? key.substring(0, atIndex) : key;
+        }
+        
         if (packageName && entry.version) {
           result.set(packageName, entry.version);
         }

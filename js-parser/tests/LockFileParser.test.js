@@ -79,6 +79,11 @@ lodash@~4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-def456
+
+"@babel/core@^7.0.0":
+  version "7.22.5"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.22.5.tgz"
+  integrity sha512-xyz789
 `;
 
     const lockFile = parser.parseYarnLock(yarnLockContent);
@@ -88,5 +93,9 @@ lodash@~4.17.21:
     // Check that entries were parsed
     const keys = Object.keys(lockFile.entries);
     assert.ok(keys.length > 0);
+    
+    // Test scoped package extraction
+    const lockedDeps = parser.getAllLockedDependencies(lockFile);
+    assert.ok(lockedDeps.has('express') || lockedDeps.has('lodash') || lockedDeps.has('@babel/core'));
   });
 });

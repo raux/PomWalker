@@ -199,8 +199,15 @@ export class DependencyResolver {
   /**
    * Format a dependency tree as a string
    */
-  formatDependencyTree(tree: DependencyTreeNode, prefix: string = ''): string {
-    let result = `${prefix}${tree.name}@${tree.version}`;
+  formatDependencyTree(tree: DependencyTreeNode, prefix: string = '', isRoot: boolean = true): string {
+    let result = '';
+    
+    // Add current node
+    if (isRoot) {
+      result = `${tree.name}@${tree.version}`;
+    } else {
+      result = `${prefix}${tree.name}@${tree.version}`;
+    }
     
     if (tree.circular) {
       result += ' [CIRCULAR]';
@@ -208,26 +215,14 @@ export class DependencyResolver {
     
     result += '\n';
 
+    // Add children
     for (let i = 0; i < tree.children.length; i++) {
       const child = tree.children[i];
       const isLast = i === tree.children.length - 1;
-      const childPrefix = prefix + (isLast ? '└── ' : '├── ');
-      const grandchildPrefix = prefix + (isLast ? '    ' : '│   ');
+      const childPrefix = (isRoot ? '' : prefix) + (isLast ? '└── ' : '├── ');
+      const grandchildPrefix = (isRoot ? '' : prefix) + (isLast ? '    ' : '│   ');
       
-      result += this.formatDependencyTree(child, childPrefix).replace(
-        childPrefix,
-        childPrefix
-      );
-      
-      // Update prefix for grandchildren
-      if (child.children.length > 0) {
-        const lines = this.formatDependencyTree(child, grandchildPrefix).split('\n');
-        for (let j = 1; j < lines.length; j++) {
-          if (lines[j]) {
-            result += lines[j] + '\n';
-          }
-        }
-      }
+      result += this.formatDependencyTree(child, grandchildPrefix, false);
     }
 
     return result;
