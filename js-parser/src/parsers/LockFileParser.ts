@@ -62,12 +62,25 @@ export class LockFileParser {
       // Parse entry properties (with indentation)
       else if (line.trim() && currentPackage && (line[0] === ' ' || line[0] === '\t')) {
         const trimmed = line.trim();
-        const colonIndex = trimmed.indexOf(' ');
         
-        if (colonIndex > 0) {
-          const key = trimmed.substring(0, colonIndex).trim();
-          let value = trimmed.substring(colonIndex + 1).trim();
-          
+        // Find the separator - could be space or just colon
+        let separatorIndex = -1;
+        let key = '';
+        let value = '';
+        
+        // Look for 'key value' or 'key: value' format
+        if (trimmed.includes(' ')) {
+          separatorIndex = trimmed.indexOf(' ');
+          key = trimmed.substring(0, separatorIndex).trim();
+          value = trimmed.substring(separatorIndex + 1).trim();
+        } else if (trimmed.includes(':')) {
+          // Handle 'key:' format (for nested properties)
+          separatorIndex = trimmed.indexOf(':');
+          key = trimmed.substring(0, separatorIndex).trim();
+          value = trimmed.substring(separatorIndex + 1).trim();
+        }
+        
+        if (key) {
           // Remove quotes
           if (value.startsWith('"') && value.endsWith('"')) {
             value = value.substring(1, value.length - 1);

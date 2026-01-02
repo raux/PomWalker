@@ -199,15 +199,8 @@ export class DependencyResolver {
   /**
    * Format a dependency tree as a string
    */
-  formatDependencyTree(tree: DependencyTreeNode, prefix: string = '', isRoot: boolean = true): string {
-    let result = '';
-    
-    // Add current node
-    if (isRoot) {
-      result = `${tree.name}@${tree.version}`;
-    } else {
-      result = `${prefix}${tree.name}@${tree.version}`;
-    }
+  formatDependencyTree(tree: DependencyTreeNode, prefix: string = ''): string {
+    let result = prefix + tree.name + '@' + tree.version;
     
     if (tree.circular) {
       result += ' [CIRCULAR]';
@@ -215,17 +208,37 @@ export class DependencyResolver {
     
     result += '\n';
 
-    // Add children
+    // Format children
     for (let i = 0; i < tree.children.length; i++) {
       const child = tree.children[i];
       const isLast = i === tree.children.length - 1;
-      const childPrefix = (isRoot ? '' : prefix) + (isLast ? '└── ' : '├── ');
-      const grandchildPrefix = (isRoot ? '' : prefix) + (isLast ? '    ' : '│   ');
       
-      result += this.formatDependencyTree(child, grandchildPrefix, false);
+      // Connector for this child
+      const connector = isLast ? '└── ' : '├── ';
+      
+      // Extension for grandchildren
+      const extension = isLast ? '    ' : '│   ';
+      
+      // Recursively format child with extension as its prefix
+      const childStr = this.formatDependencyTree(child, prefix + extension);
+      
+      // Split into lines and add connector to first line
+      const lines = childStr.split('\n');
+      if (lines.length > 0 && lines[0]) {
+        // Remove the prefix from the first line and add connector
+        const firstLine = lines[0].substring(prefix.length + extension.length);
+        result += prefix + connector + firstLine + '\n';
+        
+        // Add remaining lines as-is (they already have proper prefix)
+        for (let j = 1; j < lines.length; j++) {
+          if (lines[j]) {
+            result += lines[j] + '\n';
+          }
+        }
+      }
     }
 
-    return result;
+    return result.trimEnd();
   }
 
   /**
