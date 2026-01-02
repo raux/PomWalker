@@ -166,8 +166,13 @@ export class DependencyResolver {
 
       // Check if we've already visited this package (circular dependency)
       const visitKey = `${packageName}@${version}`;
-      if (visited.has(visitKey) || depth >= maxDepth) {
-        node.circular = visited.has(visitKey);
+      if (visited.has(visitKey)) {
+        node.circular = true;
+        return node;
+      }
+      
+      // Check max depth
+      if (depth >= maxDepth) {
         return node;
       }
 

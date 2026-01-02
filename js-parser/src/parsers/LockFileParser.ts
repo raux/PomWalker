@@ -150,13 +150,19 @@ export class LockFileParser {
         // Handle scoped packages (e.g., '@babel/core@^7.0.0')
         let packageName: string;
         if (key.startsWith('@')) {
-          // Scoped package: find the second '@'
+          // Scoped package: find the second '@' (before version)
           const secondAtIndex = key.indexOf('@', 1);
-          packageName = secondAtIndex > 0 ? key.substring(0, secondAtIndex) : key;
+          if (secondAtIndex > 0) {
+            packageName = key.substring(0, secondAtIndex);
+          } else {
+            // No version specified, just the scoped package name
+            // Remove trailing colon if present
+            packageName = key.replace(/:$/, '');
+          }
         } else {
           // Regular package
           const atIndex = key.indexOf('@');
-          packageName = atIndex > 0 ? key.substring(0, atIndex) : key;
+          packageName = atIndex > 0 ? key.substring(0, atIndex) : key.replace(/:$/, '');
         }
         
         if (packageName && entry.version) {
