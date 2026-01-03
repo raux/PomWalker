@@ -1,0 +1,27 @@
+{
+  "name": "test-package",
+  "version": "1.0.0",
+  "description": "A test package",
+  "keywords": ["test", "example"],
+  "author": "Test Author <test@example.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "lodash": "~4.17.21"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
+}
